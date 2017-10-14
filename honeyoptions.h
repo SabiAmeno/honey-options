@@ -23,14 +23,12 @@ struct option {
     int opt; //argument option arg_null/arg_required/arg_optional
 };
 
-typedef std::vector<option> options;
-
 class HoneyOptions
 {
 public:
     HoneyOptions();
 
-    inline void setopts(const options& opts)
+    inline void setopts(option* opts)
     {
         this->opts = opts;
     }
@@ -48,7 +46,7 @@ private:
     //get option by opt name
     option getopt(const std::string& opt);
 private:
-    options opts;
+	option* opts;
 
     typedef std::map<std::string, std::string> opt_result;
     opt_result opt_res;

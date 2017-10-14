@@ -1,9 +1,7 @@
-#include <cassert>
 #include "honeyoptions.h"
 
 HoneyOptions::HoneyOptions()
 {
-
 }
 
 bool HoneyOptions::process(int argc, char **argv)
@@ -16,14 +14,13 @@ bool HoneyOptions::process(int argc, char **argv)
             option validopt = getopt(opt);
             switch(validopt.opt)
             {
-            case 0: {
+            case arg_null: {
                 opt_res[validopt.opt_name] = "";
                 opt_res[validopt.sim_name] = "";
                 i++;
                 break;
             }
-            case 1: {
-//                assert(i + 1 < argc);
+            case arg_required: {
                 if(i + 1 == argc || argv[i + 1][0] == '-')
                     all_opts_valid = false;
                 else {
@@ -34,7 +31,7 @@ bool HoneyOptions::process(int argc, char **argv)
                 }
                 break;
             }
-            case 2: {
+            case arg_optional: {
                 if(i + 1 == argc || argv[i + 1][0] == '-') {
                     opt_res[validopt.opt_name] = "";
                     opt_res[validopt.sim_name] = "";
@@ -70,14 +67,15 @@ option HoneyOptions::getopt(const std::string &opt)
 {
     option valid_opt;
 
-    int size = opts.size();
-    for(int i = 0;i < size;i++) {
-        option cur = opts[i];
-        if(("--" + cur.opt_name) == opt || ("-" + cur.sim_name) == opt) {
-            valid_opt = cur;
-            break;
-        }
-    }
+	int i = 0;
+	option o = opts[i];
+	while (!o.opt_name.empty()) {
+		if (("--" + o.opt_name) == opt || ("-" + o.sim_name) == opt) {
+			valid_opt = o;
+			break;
+		}
+		o = opts[++i];
+	}
 
     return valid_opt;
 }

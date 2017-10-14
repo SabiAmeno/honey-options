@@ -3,21 +3,20 @@
 
 #include "honeyoptions.h"
 
+static option opt[] = {
+	{ "server", "s", 1 },
+	{ "port", "p", 1 },
+	{ "user", "u", 1 },
+	{ "help", "h", 0 },
+	{ "psswd", "w", 2 }
+};
+
 void usage();
 
 int main(int argc, char *argv[])
 {
-    std::cout<<"Hello Qt5"<<std::endl;
-
-    options opts;
-    opts.push_back({"server", "s", 1});
-    opts.push_back({"port", "p", 1});
-    opts.push_back({"user", "u", 1});
-    opts.push_back({"help", "h", 0});
-    opts.push_back({"psswd", "w", 2});
-
     HoneyOptions honey_opt;
-    honey_opt.setopts(opts);
+    honey_opt.setopts(opt);
     bool res = honey_opt.process(argc, argv);
     if(res) {
         std::cout << honey_opt["s"] << std::endl;
